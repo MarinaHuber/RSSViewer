@@ -11,15 +11,15 @@ View: SwiftUI views that display data from the ViewModel and handle user interac
 > - Frameworks  
 
 XML Parser
-URL Session (foreground and background)
-WebView
-Combine
-UserDefaults Data Persistence
+URL Session (foreground),
+WebView,
+Combine,
+UserDefaults Data Persistence,
 Navigation Path Routing
 
 > - Testing  
 
-Unit Tests: Tests for ViewModel
+Unit Tests: Tests for ViewModel, 
 UI Tests: Automated tests to check UI functionality of adding an RSS feed
 
 
