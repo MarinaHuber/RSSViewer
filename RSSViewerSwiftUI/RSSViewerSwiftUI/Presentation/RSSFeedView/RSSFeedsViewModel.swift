@@ -17,6 +17,19 @@ class RSSFeedsViewModel: ObservableObject {
         self.networkService = networkService
     }
 
+    func checkForNewItems() async {
+        for index in feeds.indices {
+            guard let newFeed = try? await loadRSSFeed(from: feeds[index].path, fromBackground: true) else { continue }
+
+            let newFeedItemsSet = Set<RSSItem>(newFeed.content.items)
+            let oldFeedItemsSet = Set<RSSItem>(feeds[index].content.items)
+            let newItems = newFeedItemsSet.subtracting(oldFeedItemsSet)
+            if newItems.count > 0 {
+                await updateFeedItems(forIndex: index, with: newFeed.content.items, newItemCount: newItems.count)
+            }
+        }
+    }
+
     func addURL(_ urlString: String) async throws {
         guard !feedExists(for: urlString) else { throw RSSFeedsError.feedExists }
 
@@ -29,6 +42,12 @@ class RSSFeedsViewModel: ObservableObject {
         let data = try await networkService.fetchData(from: urlString)
         let content = try await parser.parseRSS(data: data)
         return RSSFeed(path: urlString, content: content)
+    }
+
+    @MainActor
+    private func updateFeedItems(forIndex index: Int, with items: [RSSItem], newItemCount count: Int) {
+        feeds[index].newItemCount = count
+        feeds[index].content.items = items
     }
 
     private func feedExists(for urlString: String) -> Bool {

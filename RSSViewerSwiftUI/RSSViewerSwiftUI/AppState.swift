@@ -6,7 +6,7 @@
 //
 
 import Foundation
-// NOT USED
+
 class AppState: ObservableObject {
     static let shared = AppState()
 

@@ -11,6 +11,7 @@ struct ContentView: View {
     @StateObject var viewModel: RSSFeedsViewModel
     @StateObject var router: Router<Route>
     @State private var inputURL: String = ""
+    @EnvironmentObject var errorAlert: ErrorAlert
 
     var body: some View {
         NavigationStack(path: $router.currentRoute) {
@@ -54,7 +55,8 @@ struct ContentView: View {
 #if DEBUG
         let someRSSFeedURLs = ["https://feeds.bbci.co.uk/news/world/rss.xml",
                                "https://abcnews.go.com/abcnews/internationalheadlines",
-                               "https://www.cbsnews.com/latest/rss/world"]
+                               "https://www.cbsnews.com/latest/rss/world",
+                               "https://feeds.feedburner.com/time/world"]
         inputURL = someRSSFeedURLs.randomElement() ?? ""
 #else
         inputURL = ""
@@ -67,7 +69,7 @@ struct ContentView: View {
             do {
                 try await viewModel.addURL(inputURL)
             } catch {
-              //  show(error: error)
+                errorAlert.show(error: error)
             }
         }
     }

@@ -10,6 +10,7 @@ import SwiftUI
 struct RSSFeedsView: View {
     @StateObject var viewModel: RSSFeedsViewModel
     @StateObject var router: Router<Route>
+    @EnvironmentObject var appState: AppState
 
     var body: some View {
             List {
@@ -24,6 +25,12 @@ struct RSSFeedsView: View {
             }
         .navigationTitle("Feed My RSS")
         .accessibilityIdentifier("feedList")
+        .onChange(of: appState.checkForNewItems) { _, newValue in
+            defer { appState.checkForNewItems = false }
+            guard newValue else { return }
+
+            Task { await viewModel.checkForNewItems() }
+        }
     }
 
     func removeRSSFeed(at offsets: IndexSet) {
