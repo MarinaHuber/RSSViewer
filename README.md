@@ -53,5 +53,14 @@ Swift 5 or later
 
 
 **Additional context** 🌎
-Add any other context about the problem here.
+>   - Missing implementation for:
+
+Background App Refresh Tasking,
+
+Unit tests for RSS feed parser & networking,
+
+Local storage with SwiftData (new)
+
+
+
 
