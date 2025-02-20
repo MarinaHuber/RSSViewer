@@ -11,7 +11,7 @@ import Combine
 class RSSFeedsViewModel: ObservableObject {
     @Published var feeds = [RSSFeed]()
     private let networkService: NetworkServiceProtocol
-    private var feedSubscription: AnyCancellable?
+ //   private var feedSubscription: AnyCancellable?
 
     init(networkService: NetworkServiceProtocol = NetworkService()) {
         self.networkService = networkService
@@ -38,6 +38,11 @@ class RSSFeedsViewModel: ObservableObject {
     @MainActor
     private func addFeed(_ feed: RSSFeed) {
         feeds.append(feed)
+    }
+
+    @MainActor
+    func removeFeed(at offsets: IndexSet) {
+        feeds.remove(atOffsets: offsets)
     }
 
 }

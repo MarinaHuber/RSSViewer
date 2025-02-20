@@ -19,9 +19,15 @@ struct RSSFeedsView: View {
                             router.push(.itemView(path: feed.path, viewModel: viewModel))
                         }
                 }
+                .onDelete(perform: removeRSSFeed)
+
             }
         .navigationTitle("Feed My RSS")
         .accessibilityIdentifier("feedList")
+    }
+
+    func removeRSSFeed(at offsets: IndexSet) {
+        viewModel.removeFeed(at: offsets)
     }
 
 }

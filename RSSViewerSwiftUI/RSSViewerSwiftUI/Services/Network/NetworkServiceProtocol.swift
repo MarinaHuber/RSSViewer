@@ -9,7 +9,6 @@ import Foundation
 
 protocol NetworkServiceProtocol {
     func fetchData(from urlString: String) async throws -> Data
-   // func fetchDataFromBackground(from urlString: String) async throws -> Data
 }
 
 class NetworkService: NSObject, NetworkServiceProtocol {
@@ -42,32 +41,8 @@ class NetworkService: NSObject, NetworkServiceProtocol {
         }
 
         try validateResponse(response)
-
         return data
     }
-
-//    func fetchDataFromBackground(from urlString: String, onComplete: @escaping CompletionCallback) {
-//        self.onComplete = onComplete
-//
-//        guard urlString.isValidURL, let url = URL(string: urlString) else {
-//            onComplete(.failure(.invalidURL))
-//            return
-//        }
-//
-//        let backgroundConfig = URLSessionConfiguration.background(withIdentifier: "vukusic.marko.networkservice.background")
-//        backgroundSession = URLSession(configuration: backgroundConfig, delegate: self, delegateQueue: nil)
-//
-//        let task = backgroundSession!.downloadTask(with: url)
-//        task.resume()
-//    }
-//
-//    func fetchDataFromBackground(from urlString: String) async throws -> Data {
-//        try await withCheckedThrowingContinuation { continuation in
-//            fetchDataFromBackground(from: urlString) { result in
-//                continuation.resume(with: result)
-//            }
-//        }
-//    }
 
     private func validateResponse(_ response: URLResponse) throws(NetworkServiceError) {
         guard let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) else {

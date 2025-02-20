@@ -10,16 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject var viewModel: RSSFeedsViewModel
     @StateObject var router: Router<Route>
-    @State private var inputURL: String = {
-#if DEBUG
-        let someRSSFeedURLs = ["https://feeds.bbci.co.uk/news/world/rss.xml",
-                               "https://feeds.feedburner.com/time/world",
-                               "https://www.cnbc.com/id/100727362/device/rss/rss.html"]
-        return someRSSFeedURLs.randomElement() ?? ""
-#else
-        return ""
-#endif
-    }()
+    @State private var inputURL: String = ""
 
     var body: some View {
         NavigationStack(path: $router.currentRoute) {
@@ -32,16 +23,18 @@ struct ContentView: View {
 
                 }
 
-                Button("Add a Feed") {
+                Button("Add New Feed") {
                     addNewFeed()
                     router.push(.openFeed)
-
                 }
                 .frame(width: UIScreen.main.bounds.width * 0.8, height: 54)
                 .foregroundColor(.gray)
                 .background(.white)
                 .cornerRadius(100)
                 .padding(.top, 150)
+            }
+            .onAppear() {
+                updateInputURL()
             }
             .navigationDestination(for: Route.self)  { route in
                 switch route {
@@ -55,6 +48,17 @@ struct ContentView: View {
 
         }
 
+    }
+
+    private func updateInputURL() {
+#if DEBUG
+        let someRSSFeedURLs = ["https://feeds.bbci.co.uk/news/world/rss.xml",
+                               "https://abcnews.go.com/abcnews/internationalheadlines",
+                               "https://www.cbsnews.com/latest/rss/world"]
+        inputURL = someRSSFeedURLs.randomElement() ?? ""
+#else
+        inputURL = ""
+#endif
     }
 
 
