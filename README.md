@@ -49,6 +49,7 @@ Swift 5 or later
   
 # Evidence 🕵️‍♀️
 ## **Screenshots/Videos** 📱
+![Simulator Screen Recording - iPhone 16 - 2025-02-20 at 09 11 35](https://github.com/user-attachments/assets/cfdc1f96-7e9b-4f1a-94cc-f43239d7bd39)
 
 
 **Additional context** 🌎
