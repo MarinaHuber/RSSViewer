@@ -1,19 +1,23 @@
 # RSSViewer
 ## What was done? ✅
-> - Architecture
+> - Architecture  
+
 This project follows the Model-View-ViewModel (MVVM) pattern. The key components of the architecture include:
 
 Model: Defines the data structures for items and any associated properties
 ViewModel: Manages business logic and state, bridging data and the UI
 View: SwiftUI views that display data from the ViewModel and handle user interaction
-> - Frameworks
+> - Frameworks  
+
 XML Parser
 URL Session (foreground and background)
 WebView
 Combine
 UserDefaults Data Persistence
 Navigation Path Routing
-> - Testing
+
+> - Testing  
+
 Unit Tests: Tests for ViewModel
 UI Tests: Automated tests to check UI functionality of adding an RSS feed
 
@@ -36,9 +40,11 @@ title, description
 >   - 5.As a user, I can select an RSS item to access the related website/feed
 The app can open an RSS item link in WebView or device browser.
 
-Xcode 16 or later
-iOS 18 or later
-Swift 5 or later
+Xcode 16 or later  
+
+iOS 18 or later  
+
+Swift 5 or later  
   
 # Evidence 🕵️‍♀️
 ## **Screenshots/Videos** 📱
