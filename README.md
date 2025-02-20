@@ -48,8 +48,8 @@ Swift 5 or later
   
 # Evidence 🕵️‍♀️
 ## **Screenshots/Videos** 📱
+![Simulator Screen Recording - iPhone 16 - 2025-02-20 at 09 11 35](https://github.com/user-attachments/assets/fa115e25-8f9c-4f16-83b4-767bc48dc6a2)
 
-![Uploading Simulator Screen Recording - iPhone 16 - 2025-02-20 at 09.11.35.gif…]()
 
 **Additional context** 🌎
 Add any other context about the problem here.
