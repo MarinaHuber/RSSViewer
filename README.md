@@ -59,7 +59,8 @@ Background App Refresh Tasking,
 
 Unit tests for RSS feed parser & networking,
 
-Local storage with SwiftData (new)
+Favourite RSS & local notifications (Deep Linking)
+
 
 
 
