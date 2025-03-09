@@ -65,9 +65,9 @@ struct RSSFeedDetailView: View {
             errorAlert.show(error: error)
                 // Log the detailed technical error
             if let rssError = error as? RSSParserError {
-                RSSLogger.log(.error, message: rssError.debugDescription)
+                RSSLogger.shared.log(.error, message: rssError.debugDescription)
             } else {
-                RSSLogger.log(.error, message: error.localizedDescription)
+                RSSLogger.shared.log(.error, message: error.localizedDescription)
             }
 
         }

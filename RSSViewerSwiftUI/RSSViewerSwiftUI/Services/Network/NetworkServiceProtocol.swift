@@ -19,7 +19,7 @@ class NetworkService: NSObject, NetworkServiceProtocol {
     typealias CompletionCallback = (Result<Data, NetworkServiceError>) -> Void
 
     private let session: URLSessionProtocol
-    private var backgroundSession: URLSession?
+    private var backgroundSession: URLSession? // not used
 
     private var onComplete: CompletionCallback?
 

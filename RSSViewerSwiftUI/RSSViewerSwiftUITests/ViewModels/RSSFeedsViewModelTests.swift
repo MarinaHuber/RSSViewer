@@ -32,6 +32,14 @@ struct RSSFeedsViewModelTests {
         sut = RSSFeedsViewModel(networkService: mockService)
     }
 
+    @Test func syncStoredData() async throws {
+        sut.storedFeeds = [sampleFeed]
+
+        await sut.syncStoredData()
+
+        #expect(sut.feeds == [sampleFeed])
+    }
+
 
     @Test func addURLSuccessfullyAddsFeed() async throws {
         mockService.mockData = RSSData

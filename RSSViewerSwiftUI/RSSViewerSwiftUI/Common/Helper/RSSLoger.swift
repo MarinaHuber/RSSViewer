@@ -7,28 +7,42 @@
 
 import Foundation
 
+protocol LoggerProtocol {
+    func log(level: RSSLogger.Level, message: String, file: String, function: String, line: Int)
+}
+
 class RSSLogger {
     enum Level: String {
         case debug, info, error
     }
 
-    static func log(_ level: Level, message: String, file: String = #file, function: String = #function, line: Int = #line) {
-            // Extract filename from path
+    static let shared = RSSLogger()
+    private let implementation: LoggerProtocol
+    private init(implementation: LoggerProtocol = DefaultLoggerImplementation()) {
+        self.implementation = implementation
+    }
+
+    func log(_ level: Level, message: String, file: String = #file, function: String = #function, line: Int = #line) {
+        implementation.log(level: level, message: message, file: file, function: function, line: line)
+    }
+        // EXTEND TO convenience methods
+
+}
+
+
+private struct DefaultLoggerImplementation: LoggerProtocol {
+    func log(level: RSSLogger.Level, message: String, file: String, function: String, line: Int) {
         let filename = URL(fileURLWithPath: file).lastPathComponent
 
-            // Create timestamp
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss.SSS"
         let timestamp = dateFormatter.string(from: Date())
 
-            // Format log message with metadata
         let logMessage = "[\(timestamp)] [\(level.rawValue.uppercased())] [\(filename):\(line) \(function)] \(message)"
 
-            // In development, print to console
 #if DEBUG
         print(logMessage)
 #endif
-            // In production, you might write to a file or send to a logging service
-            // saveToLogFile(logMessage)
+            // Additional logging destinations for production
     }
 }

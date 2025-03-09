@@ -78,6 +78,7 @@ extension RSSParser: XMLParserDelegate {
     func parser(_ parser: XMLParser, foundCDATA CDATABlock: Data) {
         guard let decodedString = String(data: CDATABlock, encoding: .utf8) else {
             completion?(.failure(.invalidCDATAContent))
+            RSSLogger.shared.log(.error, message: "invalidCDATAContent")
             parser.abortParsing()
             return
         }
@@ -131,11 +132,6 @@ extension RSSParser: XMLParserDelegate {
             completion?(.failure(.missingRequiredElement("title")))
             return
         }
-
-        if feed.items.isEmpty {
-            completion?(.failure(.emptyFeed))
-            return
-        }
         completion?(.success(feed))
     }
 
@@ -154,7 +150,7 @@ extension RSSParser: XMLParserDelegate {
             let error = RSSParserError.malformedURL(string)
 
                 // Log error parser
-            RSSLogger.log(.error, message: error.debugDescription)
+            RSSLogger.shared.log(.error, message: error.debugDescription)
 
             completion?(.failure(error))
             parser?.abortParsing()
@@ -164,7 +160,7 @@ extension RSSParser: XMLParserDelegate {
     }
 }
 
-enum RSSParserError1: LocalizedError {
+enum RSSParserErrorTest: LocalizedError {
     case errorParsingXML
 
     var errorDescription: String? {
@@ -180,7 +176,6 @@ enum RSSParserError: LocalizedError {
     case malformedURL(String)
     case missingRequiredElement(String)
     case invalidCDATAContent
-    case emptyFeed
 
     var errorDescription: String? {
         switch self {
@@ -192,8 +187,6 @@ enum RSSParserError: LocalizedError {
             return "The feed is missing required information: \(element)"
         case .invalidCDATAContent:
             return "Some content in the feed couldn't be properly decoded."
-        case .emptyFeed:
-            return "This RSS feed doesn't contain any articles."
         }
     }
 
@@ -209,8 +202,6 @@ enum RSSParserError: LocalizedError {
             return "Required RSS element missing: '\(element)'"
         case .invalidCDATAContent:
             return "Failed to decode CDATA content"
-        case .emptyFeed:
-            return "RSS feed contains zero items"
         }
     }
 }

@@ -25,6 +25,14 @@ struct RSSFeedsView: View {
             }
         .navigationTitle("Feed My RSS")
         .accessibilityIdentifier("feedList")
+
+        .refreshable {
+            try? await Task.sleep(for: .seconds(0.5))
+            viewModel.retrieveStoredFeeds()
+        }
+
+        .task { await viewModel.syncStoredData() }
+        
         .onChange(of: appState.checkForNewItems) { _, newValue in
             defer { appState.checkForNewItems = false }
             guard newValue else { return }

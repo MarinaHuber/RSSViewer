@@ -9,9 +9,12 @@ import Foundation
 import Combine
 
 class RSSFeedsViewModel: ObservableObject {
+    @UserDefaultsWrapper(key: "storedFeeds", defaultValue: [])
+    var storedFeeds: [RSSFeed]
+
     @Published var feeds = [RSSFeed]()
     private let networkService: NetworkServiceProtocol
- //   private var feedSubscription: AnyCancellable?
+    private var feedSubscription: AnyCancellable?
 
     init(networkService: NetworkServiceProtocol = NetworkService()) {
         self.networkService = networkService
@@ -42,6 +45,21 @@ class RSSFeedsViewModel: ObservableObject {
         let data = try await networkService.fetchData(from: urlString)
         let content = try await parser.parseRSS(data: data)
         return RSSFeed(path: urlString, content: content)
+    }
+
+    func syncStoredData() async {
+        await retrieveStoredFeeds()
+
+        feedSubscription = $feeds
+            .removeDuplicates()
+            .filter { $0 != self.storedFeeds }
+            .sink { [weak self] newValue in
+                self?.storedFeeds = newValue
+            }
+    }
+    @MainActor
+    func retrieveStoredFeeds() {
+        feeds = storedFeeds
     }
 
     @MainActor

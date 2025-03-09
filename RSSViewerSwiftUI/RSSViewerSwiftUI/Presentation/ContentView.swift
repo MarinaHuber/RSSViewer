@@ -70,7 +70,7 @@ struct ContentView: View {
             do {
                 try await viewModel.addURL(inputURL)
             } catch {
-                RSSLogger.log(.error, message: "Failed to add feed: \(inputURL). Error: \(error.localizedDescription)")
+                RSSLogger.shared.log(.error, message: "Failed to add feed: \(inputURL). Error: \(error.localizedDescription)")
                 errorAlert.show(error: error)
             }
         }
