@@ -37,6 +37,7 @@ struct ContentView: View {
             .onAppear() {
                 updateInputURL()
             }
+            .errorAlert(errorAlert)
             .navigationDestination(for: Route.self)  { route in
                 switch route {
                 case let .itemView(path, viewModel):
@@ -69,6 +70,7 @@ struct ContentView: View {
             do {
                 try await viewModel.addURL(inputURL)
             } catch {
+                RSSLogger.log(.error, message: "Failed to add feed: \(inputURL). Error: \(error.localizedDescription)")
                 errorAlert.show(error: error)
             }
         }

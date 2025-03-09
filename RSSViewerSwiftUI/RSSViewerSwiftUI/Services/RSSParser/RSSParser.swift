@@ -76,7 +76,12 @@ extension RSSParser: XMLParserDelegate {
     }
 
     func parser(_ parser: XMLParser, foundCDATA CDATABlock: Data) {
-        currentText += trimmed(String(data: CDATABlock, encoding: .utf8) ?? "")
+        guard let decodedString = String(data: CDATABlock, encoding: .utf8) else {
+            completion?(.failure(.invalidCDATAContent))
+            parser.abortParsing()
+            return
+        }
+        currentText += trimmed(decodedString)
     }
 
     func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
@@ -96,17 +101,18 @@ extension RSSParser: XMLParserDelegate {
             currentItem?.description = currentText
 
         case .url:
-            feed.imageURL = URL(string: currentText)
+            feed.imageURL = validateAndCreateURL(from: currentText, parser: parser)
 
         case .image:
-            currentItem?.imageURL = URL(string: currentText)
+            currentItem?.imageURL = validateAndCreateURL(from: currentText, parser: parser)
 
         case .link:
-            guard currentItem != nil else {
-                feed.linkURL = URL(string: currentText)
-                return
+            if currentItem == nil {
+                feed.linkURL = validateAndCreateURL(from: currentText, parser: parser)
+            } else {
+                    // Item link URL - critical for item functionality
+                currentItem?.linkURL = validateAndCreateURL(from: currentText, parser: parser)
             }
-            currentItem?.linkURL = URL(string: currentText)
 
         case .item:
             if let item = currentItem {
@@ -121,25 +127,90 @@ extension RSSParser: XMLParserDelegate {
     }
 
     func parserDidEndDocument(_ parser: XMLParser) {
+        if feed.title == nil {
+            completion?(.failure(.missingRequiredElement("title")))
+            return
+        }
+
+        if feed.items.isEmpty {
+            completion?(.failure(.emptyFeed))
+            return
+        }
         completion?(.success(feed))
     }
 
     func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
-        completion?(.failure(.errorParsingXML))
+        completion?(.failure(.errorParsingXML(underlying: parseError)))
     }
 
     private func trimmed(_ string: String) -> String {
         string.trimmingCharacters(in: .whitespacesAndNewlines)
     }
+
+    private func validateAndCreateURL(from string: String, parser: XMLParser? = nil) -> URL? {
+        guard !string.isEmpty else { return nil }
+
+        guard let url = URL(string: string) else {
+            let error = RSSParserError.malformedURL(string)
+
+                // Log error parser
+            RSSLogger.log(.error, message: error.debugDescription)
+
+            completion?(.failure(error))
+            parser?.abortParsing()
+            return nil
+        }
+        return url
+    }
 }
 
-enum RSSParserError: LocalizedError {
+enum RSSParserError1: LocalizedError {
     case errorParsingXML
 
     var errorDescription: String? {
         switch self {
         case .errorParsingXML:
             return "URL link does not contain a valid RSS feed"
+        }
+    }
+}
+
+enum RSSParserError: LocalizedError {
+    case errorParsingXML(underlying: Error? = nil)
+    case malformedURL(String)
+    case missingRequiredElement(String)
+    case invalidCDATAContent
+    case emptyFeed
+
+    var errorDescription: String? {
+        switch self {
+        case .errorParsingXML:
+            return "Unable to read the RSS feed. The content might be corrupted or in an unsupported format."
+        case .malformedURL(let urlString):
+            return "The feed contains an invalid web address: \(urlString)"
+        case .missingRequiredElement(let element):
+            return "The feed is missing required information: \(element)"
+        case .invalidCDATAContent:
+            return "Some content in the feed couldn't be properly decoded."
+        case .emptyFeed:
+            return "This RSS feed doesn't contain any articles."
+        }
+    }
+
+        // Technical details for logging
+    var debugDescription: String {
+        switch self {
+        case .errorParsingXML(let error):
+            let detail = error?.localizedDescription ?? "Unknown parsing error"
+            return "XML Parser error: \(detail)"
+        case .malformedURL(let urlString):
+            return "Malformed URL encountered: '\(urlString)'"
+        case .missingRequiredElement(let element):
+            return "Required RSS element missing: '\(element)'"
+        case .invalidCDATAContent:
+            return "Failed to decode CDATA content"
+        case .emptyFeed:
+            return "RSS feed contains zero items"
         }
     }
 }

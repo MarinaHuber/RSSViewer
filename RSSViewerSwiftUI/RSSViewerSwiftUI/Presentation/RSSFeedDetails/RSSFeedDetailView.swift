@@ -15,6 +15,7 @@ struct RSSFeedDetailView: View {
     @State private var webViewModel: WebViewModel?
     @State private var isLoading = false
     @State private var feed: RSSFeed?
+    @EnvironmentObject var errorAlert: ErrorAlert
 
     private var items: [RSSItem] { feed?.content.items ?? [] }
 
@@ -36,7 +37,7 @@ struct RSSFeedDetailView: View {
         .task { await loadFeed() }
 
         .sheet(item: $webViewModel) { model in
-        //show web view
+                //show web view
             ZStack {
                 WebView(isLoading: $isLoading, url: model.linkURL)
 
@@ -47,7 +48,9 @@ struct RSSFeedDetailView: View {
                         .background(Color(.systemBackground))
                         .cornerRadius(8)
                 }
-            }        }
+            }
+        }
+        .errorAlert(errorAlert)
     }
 
     private func openLink(_ linkURL: URL?) {
@@ -59,6 +62,13 @@ struct RSSFeedDetailView: View {
             feed = try await viewModel.loadRSSFeed(from: path)
         } catch {
         //show error
+            errorAlert.show(error: error)
+                // Log the detailed technical error
+            if let rssError = error as? RSSParserError {
+                RSSLogger.log(.error, message: rssError.debugDescription)
+            } else {
+                RSSLogger.log(.error, message: error.localizedDescription)
+            }
 
         }
     }

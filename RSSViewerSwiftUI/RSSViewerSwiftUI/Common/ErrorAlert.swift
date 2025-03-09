@@ -13,7 +13,11 @@ class ErrorAlert: ObservableObject {
     @Published var message = ""
 
     func show(error: Error) {
-        self.message = error.localizedDescription
+        if let localizedError = error as? LocalizedError {
+            self.message = localizedError.errorDescription ?? error.localizedDescription
+        } else {
+            self.message = error.localizedDescription
+        }
         self.showError = true
     }
 }
