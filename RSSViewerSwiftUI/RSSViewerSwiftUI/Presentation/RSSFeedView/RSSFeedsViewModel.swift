@@ -84,6 +84,18 @@ class RSSFeedsViewModel: ObservableObject {
 
 }
 
+enum RSSFeedsError: LocalizedError {
+    case feedExists
+
+    var errorDescription: String? {
+        switch self {
+        case .feedExists:
+            return "RSS feed already in list"
+        }
+    }
+}
+
+
 // Required for RSSFeed Models
 extension RSSFeedsViewModel: Equatable {
     public static func == (lhs: RSSFeedsViewModel, rhs: RSSFeedsViewModel) -> Bool {

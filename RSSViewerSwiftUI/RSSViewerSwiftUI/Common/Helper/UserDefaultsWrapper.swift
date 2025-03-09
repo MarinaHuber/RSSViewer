@@ -34,4 +34,3 @@ struct UserDefaultsWrapper<T: Codable> {
         }
     }
 }
-

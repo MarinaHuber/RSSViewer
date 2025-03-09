@@ -25,8 +25,16 @@ struct ContentView: View {
                 }
 
                 Button("Add New Feed") {
-                    addNewFeed()
-                    router.push(.openFeed)
+                    if inputURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                        errorAlert.show(error: NSError(
+                            domain: "InputValidation",
+                            code: 100,
+                            userInfo: [NSLocalizedDescriptionKey: "Please enter a valid RSS URL"]
+                        ))
+                    } else {
+                        addNewFeed()
+                        router.push(.openFeed)
+                    }
                 }
                 .frame(width: UIScreen.main.bounds.width * 0.8, height: 54)
                 .foregroundColor(.gray)

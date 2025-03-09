@@ -86,15 +86,3 @@ enum NetworkServiceError: LocalizedError {
         }
     }
 }
-
-enum RSSFeedsError: LocalizedError {
-    case feedExists
-
-    var errorDescription: String? {
-        switch self {
-        case .feedExists:
-            return "RSS feed already in list"
-        }
-    }
-}
-
