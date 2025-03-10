@@ -81,7 +81,7 @@ struct GlobeView: UIViewRepresentable {
     }
 
     private func createTextTexture() -> UIImage {
-        let size = CGSize(width: 1024, height: 512)
+        let size = CGSize(width: 512, height: 256)
         let renderer = UIGraphicsImageRenderer(size: size)
 
         return renderer.image { ctx in
