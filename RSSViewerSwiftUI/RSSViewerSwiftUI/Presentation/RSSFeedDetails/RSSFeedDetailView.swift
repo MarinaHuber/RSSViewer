@@ -39,7 +39,7 @@ struct RSSFeedDetailView: View {
         .sheet(item: $webViewModel) { model in
                 //show web view
             ZStack {
-                WebView(isLoading: $isLoading, url: model.linkURL)
+                WebView(isLoading: isLoading, url: model.linkURL)
 
                 if isLoading {
                     ProgressView("Loading...")

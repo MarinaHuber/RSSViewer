@@ -7,10 +7,11 @@
 
 import BackgroundTasks
 
-enum BackgroundRefreshService {
-    static let identifier: String = "codable.RSSViewer.refresh"
+// use factory methods
+enum BRefreshService {
+    static let identifier: String = "codable.RSSViewerSwiftUI.refresh"
 
-    static func register(callback: @escaping ()->Void) {
+    static func register(callback: @escaping ()-> Void) {
         BGTaskScheduler.shared.register(forTaskWithIdentifier: identifier, using: nil) { task in
             task.expirationHandler = { task.setTaskCompleted(success: false) }
 

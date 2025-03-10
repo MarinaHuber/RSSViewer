@@ -7,9 +7,8 @@
 import SwiftUI
 import WebKit
 
-struct WebView: UIViewRepresentable{
-    @Binding var isLoading: Bool
-
+struct WebView: UIViewRepresentable {
+    var isLoading: Bool
     var url: URL?
 
     func makeUIView(context: Context) -> some UIView {

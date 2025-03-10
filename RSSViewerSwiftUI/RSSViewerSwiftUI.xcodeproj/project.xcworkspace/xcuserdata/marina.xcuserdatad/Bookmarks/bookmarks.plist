@@ -12,13 +12,13 @@
 					<key>EndingColumnNumber</key>
 					<string>0</string>
 					<key>EndingLineNumber</key>
-					<string>10</string>
+					<string>11</string>
 					<key>StartingColumnNumber</key>
 					<string>0</string>
 					<key>StartingLineNumber</key>
-					<string>9</string>
+					<string>10</string>
 					<key>Timestamp</key>
-					<string>761723634.6313649</string>
+					<string>763293153.0323009</string>
 				</dict>
 				<key>rebasable-url</key>
 				<dict>
@@ -37,8 +37,8 @@
 				<string>@propertyWrapper
 </string>
 				<key>leading</key>
-				<string>import Foundation
-
+				<string>
+//UserDefaults can be observed using Key-Value Observing for any key stored in it.
 </string>
 				<key>trailing</key>
 				<string>struct UserDefaultsWrapper&lt;T: Codable&gt; {

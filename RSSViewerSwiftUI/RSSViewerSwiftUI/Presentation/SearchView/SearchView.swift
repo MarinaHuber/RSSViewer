@@ -8,7 +8,6 @@
 import SwiftUI
 import SceneKit
 
-// Custom styled TextField with blurred background
 struct SearchView: View {
     @Binding var rssURL: String
 
@@ -39,8 +38,7 @@ actor TextureGenerator {
     }
 
     private func createTextTexture() -> UIImage {
-            // Reduced size texture for better performance
-        let size = CGSize(width: 512, height: 256)
+        let size = CGSize(width: 1024, height: 512)
         let renderer = UIGraphicsImageRenderer(size: size)
 
         return renderer.image { ctx in
@@ -87,7 +85,7 @@ struct GlobeView: UIViewRepresentable {
                 while !Task.isCancelled {
                     await self?.updateTexture()
 
-                    try? await Task.sleep(nanoseconds: 250_000_000) // 0.25 seconds
+                    try? await Task.sleep(nanoseconds: 250_000_000) // 0.25 seconds timer
                 }
             }
         }

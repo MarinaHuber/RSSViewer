@@ -7,6 +7,7 @@
 
 import Foundation
 
+//UserDefaults can be observed using Key-Value Observing for any key stored in it.
 @propertyWrapper
 struct UserDefaultsWrapper<T: Codable> {
     private let key: String

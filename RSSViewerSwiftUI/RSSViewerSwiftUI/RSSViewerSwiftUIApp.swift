@@ -19,7 +19,7 @@ struct RSSViewerSwiftUIApp: App {
                 .environmentObject(AppState.shared)
                 .environmentObject(errorAlert)
                 .onReceive(NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)) { _ in
-                    try? BackgroundRefreshService.scheduleTask()
+                    try? BRefreshService.scheduleTask()
                 }
         }
     }
@@ -28,7 +28,7 @@ struct RSSViewerSwiftUIApp: App {
 // TODO: - ADD LOCAL NOTIFICATION FOR BG MODE
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        BackgroundRefreshService.register(callback: checkForNewItems)
+        BRefreshService.register(callback: checkForNewItems)
         return true
     }
 

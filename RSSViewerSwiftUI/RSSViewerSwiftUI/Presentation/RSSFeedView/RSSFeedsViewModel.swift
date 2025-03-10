@@ -35,7 +35,6 @@ class RSSFeedsViewModel: ObservableObject {
 
     func addURL(_ urlString: String) async throws {
         guard !feedExists(for: urlString) else { throw RSSFeedsError.feedExists }
-
         let feed = try await loadRSSFeed(from: urlString)
         await addFeed(feed)
     }
@@ -57,6 +56,7 @@ class RSSFeedsViewModel: ObservableObject {
                 self?.storedFeeds = newValue
             }
     }
+
     @MainActor
     func retrieveStoredFeeds() {
         feeds = storedFeeds
@@ -69,7 +69,8 @@ class RSSFeedsViewModel: ObservableObject {
     }
 
     private func feedExists(for urlString: String) -> Bool {
-        feeds.contains(where: { $0.path == urlString })
+        feeds.contains(where: { $0.path == urlString }) ||
+        storedFeeds.contains(where: { $0.path == urlString })
     }
     
     @MainActor

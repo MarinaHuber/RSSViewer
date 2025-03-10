@@ -9,7 +9,6 @@ import SwiftUI
 
 struct RSSFeedItemRow: View {
     let item: RSSItem
-
     let imageSize: CGFloat = 120
 
     var body: some View {
