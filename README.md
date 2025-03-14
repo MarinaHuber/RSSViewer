@@ -57,8 +57,6 @@ Swift 5 or later
 
 Background App Refresh Tasking,
 
-Unit tests for RSS feed parser & networking,
-
 Favourite RSS & local notifications (Deep Linking)
 
 
