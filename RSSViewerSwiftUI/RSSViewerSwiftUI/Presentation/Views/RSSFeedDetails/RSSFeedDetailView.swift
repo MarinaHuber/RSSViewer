@@ -39,7 +39,7 @@ struct RSSFeedDetailView: View {
         .sheet(item: $webViewModel) { model in
                 //show web view
             ZStack {
-                WebView(isLoading: isLoading, url: model.linkURL)
+                WebView(isLoading: $isLoading, url: model.linkURL)
 
                 if isLoading {
                     ProgressView("Loading...")
@@ -59,7 +59,7 @@ struct RSSFeedDetailView: View {
 
     private func loadFeed() async {
         do {
-            feed = try await viewModel.loadRSSFeed(from: path)
+            feed = try await viewModel.loadFeed(from: path)
         } catch {
         //show error
             errorAlert.show(error: error)
@@ -75,7 +75,7 @@ struct RSSFeedDetailView: View {
 }
 
 #Preview {
-    RSSFeedDetailView(path: "", viewModel: RSSFeedsViewModel(networkService: NetworkService()))
+  //  RSSFeedDetailView(path: "", viewModel: RSSFeedsViewModel(networkService: NetworkService()))
 }
 
 struct WebViewModel: Identifiable {

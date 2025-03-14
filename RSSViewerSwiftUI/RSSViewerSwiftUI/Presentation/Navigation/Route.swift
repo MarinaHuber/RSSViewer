@@ -8,7 +8,7 @@
 import SwiftUI
 
 enum Route: Hashable {
-    case itemView(path: String, viewModel: RSSFeedsViewModel)
+    case itemView(path: String)
     case openFeed
 }
 

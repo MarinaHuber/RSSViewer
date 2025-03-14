@@ -10,40 +10,33 @@ import SwiftUI
 struct RSSFeedsView: View {
     @ObservedObject var viewModel: RSSFeedsViewModel
     @StateObject var router: Router<Route>
-    @EnvironmentObject var appState: AppState
 
     var body: some View {
             List {
                 ForEach($viewModel.feeds) { $feed in
                     RSSFeedRowView(feed: feed)
                         .onTapGesture {
-                            router.push(.itemView(path: feed.path, viewModel: viewModel))
+                            router.push(.itemView(path: feed.path))
                         }
                 }
-                .onDelete(perform: removeRSSFeed)
-
+                .onDelete(perform: { offsets in
+                    Task {
+                        await viewModel.removeRSSFeed(at: offsets)
+                    }
+                })
             }
         .navigationTitle("Feed My RSS")
         .accessibilityIdentifier("feedList")
 
         .refreshable {
             try? await Task.sleep(for: .seconds(0.5))
-            viewModel.retrieveStoredFeeds()
+            await viewModel.syncStoredData()
         }
 
         .task { await viewModel.syncStoredData() }
         
-//        .onChange(of: appState.checkForNewItems) { _, newValue in
-//            defer { appState.checkForNewItems = false }
-//            guard newValue else { return }
-//
-//            Task { await viewModel.checkForNewItems() }
-//        }
     }
 
-    func removeRSSFeed(at offsets: IndexSet) {
-        viewModel.removeFeed(at: offsets)
-    }
 
 }
 

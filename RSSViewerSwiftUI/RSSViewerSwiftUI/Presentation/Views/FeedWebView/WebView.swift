@@ -4,25 +4,27 @@
 //
 //  Created by Marina Huber on 18.02.2025..
 //
+
 import SwiftUI
 import WebKit
 
 struct WebView: UIViewRepresentable {
-    var isLoading: Bool
+        // Use Binding instead of direct reference to isLoading
+    @Binding var isLoading: Bool
     var url: URL?
 
-    func makeUIView(context: Context) -> some UIView {
-        guard let url else {
-            return WKWebView()
-        }
-
+    func makeUIView(context: Context) -> WKWebView {
         let webview = WKWebView()
         webview.navigationDelegate = context.coordinator
-        webview.load(URLRequest(url: url))
+        if let url = url {
+            webview.load(URLRequest(url: url))
+        }
         return webview
     }
 
-    func updateUIView(_ uiView: UIViewType, context: Context) { }
+    func updateUIView(_ uiView: WKWebView, context: Context) {
+            // Can update the webview if needed
+    }
 
     func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -36,15 +38,22 @@ struct WebView: UIViewRepresentable {
         }
 
         func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-            parent.isLoading = true
+                // Dispatch to main thread to update SwiftUI state
+            DispatchQueue.main.async {
+                self.parent.isLoading = true
+            }
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-            parent.isLoading = false
+            DispatchQueue.main.async {
+                self.parent.isLoading = false
+            }
         }
 
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-            parent.isLoading = false
+            DispatchQueue.main.async {
+                self.parent.isLoading = false
+            }
         }
     }
 }

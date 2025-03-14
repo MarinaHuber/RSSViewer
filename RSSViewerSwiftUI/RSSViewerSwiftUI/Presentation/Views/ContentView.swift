@@ -48,7 +48,7 @@ struct ContentView: View {
             .errorAlert(errorAlert)
             .navigationDestination(for: Route.self)  { route in
                 switch route {
-                case let .itemView(path, viewModel):
+                case let .itemView(path):
                     RSSFeedDetailView(path: path, viewModel: viewModel)
                 case .openFeed:
                     RSSFeedsView(viewModel: viewModel, router: router)

@@ -18,6 +18,7 @@ class RSSLogger {
 
     static let shared = RSSLogger()
     private let implementation: LoggerProtocol
+    
     private init(implementation: LoggerProtocol = DefaultLoggerImplementation()) {
         self.implementation = implementation
     }
@@ -29,8 +30,7 @@ class RSSLogger {
 
 }
 
-
-private struct DefaultLoggerImplementation: LoggerProtocol {
+struct DefaultLoggerImplementation: LoggerProtocol {
     func log(level: RSSLogger.Level, message: String, file: String, function: String, line: Int) {
         let filename = URL(fileURLWithPath: file).lastPathComponent
 

@@ -11,6 +11,6 @@ struct RSSItem: Codable, Identifiable, Hashable {
 
 extension RSSItem: Equatable {
     static func == (lhs: RSSItem, rhs: RSSItem) -> Bool {
-        lhs.linkURL == rhs.linkURL
+        lhs.linkURL?.absoluteString == rhs.linkURL?.absoluteString
     }
 }
