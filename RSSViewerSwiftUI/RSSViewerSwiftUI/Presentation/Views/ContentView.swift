@@ -62,10 +62,10 @@ struct ContentView: View {
 
     private func updateInputURL() {
 #if DEBUG
-        let someRSSFeedURLs = ["https://feeds.bbci.co.uk/news/world/rss.xml",
-                               "https://rss.dw.com/xml/rss_en_science",
-                               "https://www.cbsnews.com/latest/rss/world",
-                               "https://feeds.feedburner.com/time/world"]
+        let someRSSFeedURLs = ["https://stabmag.com/feed/",
+                               "https://thebeginnersurfer.com/feed",
+                               "https://surfd.com/feed",
+                               "https://surfstrengthcoach.com/feed"]
         inputURL = someRSSFeedURLs.randomElement() ?? ""
 #else
         inputURL = ""
