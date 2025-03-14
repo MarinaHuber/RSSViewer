@@ -20,7 +20,6 @@ class RSSFeedsViewModel: ObservableObject {
         self.repository = repository
         self.addFeedUseCase = addFeedUseCase
 
-            // Start observing changes to feeds
         setupFeedsObserver()
     }
 
@@ -33,7 +32,7 @@ class RSSFeedsViewModel: ObservableObject {
         if feeds.contains(where: { $0.path == urlString }) {
             throw RSSFeedsError.feedExists
         }
-
+            // Check local db feeds
         let feed = try await addFeedUseCase.execute(url: urlString)
         feeds.append(feed)
     }

@@ -14,7 +14,7 @@ protocol LocalDatabaseRSSProtocol {
     func removeFeed(at offset: IndexSet) async
 }
 
-class LocalDatabaseRSSManager: LocalDatabaseRSSProtocol {
+class LocalDatabaseManager: LocalDatabaseRSSProtocol {
     @UserDefaultsWrapper(key: "storedFeeds", defaultValue: [])
     private var storedFeeds: [RSSFeed]
 

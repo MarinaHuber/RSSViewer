@@ -19,7 +19,7 @@ class RSSFeedManager: RSSFeedProtocol {
     private let localDatabaseManager: LocalDatabaseRSSProtocol
     private let apiManager: APIManagerRSSProtocol
 
-    init(localDatabaseManager: LocalDatabaseRSSProtocol = LocalDatabaseRSSManager(),
+    init(localDatabaseManager: LocalDatabaseRSSProtocol = LocalDatabaseManager(),
          apiManager: APIManagerRSSProtocol = APIManagerRSS()) {
         self.localDatabaseManager = localDatabaseManager
         self.apiManager = apiManager

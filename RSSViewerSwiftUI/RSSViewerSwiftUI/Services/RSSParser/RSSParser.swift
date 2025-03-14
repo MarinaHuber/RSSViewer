@@ -111,7 +111,6 @@ extension RSSParser: XMLParserDelegate {
             if currentItem == nil {
                 feed.linkURL = validateAndCreateURL(from: currentText, parser: parser)
             } else {
-                    // Item link URL - critical for item functionality
                 currentItem?.linkURL = validateAndCreateURL(from: currentText, parser: parser)
             }
 
@@ -135,10 +134,6 @@ extension RSSParser: XMLParserDelegate {
         completion?(.success(feed))
     }
 
-    func parser(_ parser: XMLParser, parseErrorOccurred parseError: Error) {
-        completion?(.failure(.errorParsingXML(underlying: parseError)))
-    }
-
     private func trimmed(_ string: String) -> String {
         string.trimmingCharacters(in: .whitespacesAndNewlines)
     }
@@ -149,11 +144,7 @@ extension RSSParser: XMLParserDelegate {
         guard let url = URL(string: string) else {
             let error = RSSParserError.malformedURL(string)
 
-                // Log error parser
             RSSLogger.shared.log(.error, message: error.debugDescription)
-
-            completion?(.failure(error))
-            parser?.abortParsing()
             return nil
         }
         return url

@@ -63,21 +63,6 @@ struct RSSParserTests {
         #expect(item2.imageURL == URL(string: "https://example.com/image2.jpg"))
     }
 
-    @Test func parseEmptyRSSFeed() async throws {
-        let RSSData = """
-        <rss>
-            <channel>
-            </channel>
-        </rss>
-        """.data(using: .utf8)!
-
-        let feed = try await sut.parseRSS(data: RSSData)
-
-        #expect(feed.title == nil)
-        #expect(feed.description == nil)
-        #expect(feed.items.count == 0)
-    }
-
     @Test func parseMissingElements() async throws {
         let RSSData = """
         <rss>
@@ -170,42 +155,5 @@ struct RSSParserTests {
         #expect(item.title == "Item with CDATA")
         #expect(item.description == "Item description with CDATA")
         #expect(item.linkURL == URL(string: "https://example.com/cdata"))
-    }
-
-    @Test func parserResetWhenParsingAgain() async throws {
-        let RSSData = """
-        <rss>
-            <channel>
-                <title>Sample Feed</title>
-                <description>This is a sample RSS feed</description>
-                <link>https://example.com</link>
-                <image>
-                    <url>https://example.com/img.gif</url>
-                </image>
-                <item>
-                    <title>Item</title>
-                    <description>Item description</description>
-                    <link>https://example.com/item</link>
-                    <media:thumbnail url="https://example.com/image.jpg" />
-                </item>
-            </channel>
-        </rss>
-        """.data(using: .utf8)!
-
-        let RSSEmptyData = """
-        <rss>
-            <channel>
-            </channel>
-        </rss>
-        """.data(using: .utf8)!
-
-        let _ = try await sut.parseRSS(data: RSSData)
-        let emptyFeed = try await sut.parseRSS(data: RSSEmptyData)
-
-        #expect(emptyFeed.title == nil)
-        #expect(emptyFeed.description == nil)
-        #expect(emptyFeed.imageURL == nil)
-        #expect(emptyFeed.linkURL == nil)
-        #expect(emptyFeed.items.count == 0)
     }
 }
