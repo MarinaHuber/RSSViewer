@@ -19,7 +19,7 @@ Navigation Path Routing
 
 > - Testing  
 
-Unit Tests: Tests for ViewModel, 
+Unit Tests: Tests for ViewModel, Data Managers, 
 UI Tests: Automated tests to check UI functionality of adding an RSS feed
 
 
