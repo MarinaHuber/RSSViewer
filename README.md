@@ -1,63 +1,71 @@
 
 # RSSViewer
-## What was done? ✅
-> - Architecture  
 
-This project follows the Model-View-ViewModel (MVVM) pattern. The key components of the architecture include:
+TL;DR  
+Lightweight iOS RSS/Atom reader built with SwiftUI and MVVM. Add feeds, view items, and open full articles in a WebView. Includes unit and UI tests. Targets iOS 18 / Xcode 16.
 
-Model: Defines the data structures for items and any associated properties
-ViewModel: Manages business logic and state, bridging data and the UI
-View: SwiftUI views that display data from the ViewModel and handle user interaction
-> - Frameworks  
+## Quickstart (run in <10 minutes)
+Prerequisites
+- Xcode 16 or later
+- macOS compatible with Xcode 16+
+- Swift 5+
 
-XML Parser
-URL Session (foreground),
-WebView,
-Combine,
-UserDefaults Data Persistence,
-Navigation Path Routing
+Get the code
+git clone https://github.com/MarinaHuber/RSSViewer.git
+cd RSSViewer
 
-> - Testing  
+Open & run
+1. Open `RSSViewer.xcodeproj` (or `.xcworkspace` if CocoaPods/Carthage used) in Xcode 16.
+2. Select an iOS 18+ simulator (e.g., iPhone 16+).
+3. Build (⌘B) and Run (⌘R).
 
-Unit Tests: Tests for ViewModel, Data Managers, 
-UI Tests: Automated tests to check UI functionality of adding an RSS feed
+Run tests
+- Unit tests: Product → Test or `⌘U`
+- UI tests: select the UI test target and run
 
+## What it does ✅
+- Add / remove RSS feeds by URL
+- List feeds with title, image (when available), and description
+- Open a feed to view items (item includes image, title, description)
+- Open items in an embedded WebView or external browser
 
-# Description 📝
-## Project Info 📈
-> - Requirements
+## Architecture (MVVM)
+- **Model**: data structures for feeds & items  
+- **ViewModel**: business logic, state management, Combine publishers  
+- **View**: SwiftUI views and NavigationPath routing  
+MVVM separates UI from business logic for testability and maintainability [[2]] [[4]].
 
->   - 1.As a user, I can add RSS feed by specifying an RSS feed URL
->   - 2.As a user, I can remove RSS feeds
->   - 3.As a user, I can see added RSS feeds
+Diagrams & flow
+See `docs/architecture.md` and `diagrams/architecture.svg` for a component diagram (UI → ViewModel → Fetcher/Worker → Persistence).
 
-Each RSS feed presentation should include RSS feed name, image (if it
-exists), description
+## Tech stack / frameworks
+- SwiftUI, Combine  
+- URLSession for network fetches  
+- XML parsing for RSS/Atom  
+- WebView for article viewing  
+- UserDefaults for simple persistence (consider CoreData/Postgres for scale)  
+- NavigationPath routing
 
->   -4.As a user, I can select an RSS feed to open a screen with the RSS feed items
-Each RSS feed item presentation should include an image (if it exists),
-title, description
+## Testing
+- Unit tests: ViewModel, Data Managers  
+- UI tests: automated test for adding a feed and basic UI flows
 
->   - 5.As a user, I can select an RSS item to access the related website/feed
-The app can open an RSS item link in WebView or device browser.
+## Known limitations / Roadmap
+- Background App Refresh (fetching in background) — planned  
+- Favorites, Local Notifications, Deep Linking — planned
 
-Xcode 16 or later  
-
-iOS 18 or later  
-
-Swift 5 or later  
   
 # Evidence 🕵️‍♀️
 ## **Screenshots/Videos** 📱
 ![Simulator Screen Recording - iPhone 16 - 2025-02-20 at 09 11 35](https://github.com/user-attachments/assets/cfdc1f96-7e9b-4f1a-94cc-f43239d7bd39)
 
 
-**Additional context** 🌎
->   - Missing implementation for:
 
-Background App Refresh Tasking,
+## Contributing
+Contributions welcome. Please open a PR and run the test suite before submitting. See `CONTRIBUTING.md` for details.
 
-Favourite RSS & local notifications (Deep Linking)
+## License
+MIT — see `LICENSE` file for details.
 
 
 
